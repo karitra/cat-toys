@@ -8,7 +8,7 @@
   END;
   -%]
 
-<ul class="pagination pull-center">
+<ul class="pagination pagination-sm pull-center">
   [% IF chunk_number <= 0 -%]
 			<li class="disabled"><a href="#"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
   [% ELSE %]

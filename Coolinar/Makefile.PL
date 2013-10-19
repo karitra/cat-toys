@@ -9,11 +9,17 @@ use Module::Install::Catalyst; # Complain loudly if you don't have
 name 'Coolinar';
 all_from 'lib/Coolinar.pm';
 
+requires 'Module::Build::Tiny';
+
 requires 'Catalyst::Runtime' => '5.90042';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Plugin::StackTrace';
 requires 'Catalyst::Action::RenderView';
+
+requires 'Catalyst::View::TT';
+requires 'MooseX::MarkAsMethods';
+requires 'MooseX::NoMoose';
 
 #
 # kaa @ 14.10.13: forms handler <=> model mapping module
@@ -34,6 +40,7 @@ requires 'Catalyst::Plugin::Cache';
 
 requires 'Catalyst::Authentication::Realm::SimpleDB';
 requires 'DBIx::Class::PassphraseColumn';
+requires 'DBIx::Class::TimeStamp';
 
 requires 'Cache::Memcached::libmemcached';
 
@@ -42,7 +49,11 @@ requires 'namespace::autoclean';
 requires 'Config::General'; # This should reflect the config file format you've chosen
                  # See Catalyst::Plugin::ConfigLoader for supported formats
 test_requires 'Test::More' => '0.88';
+
+
 catalyst;
+
+#catalyst_par();
 
 install_script glob('script/*.pl');
 auto_install;

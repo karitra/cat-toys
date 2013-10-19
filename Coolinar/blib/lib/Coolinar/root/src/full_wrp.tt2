@@ -7,7 +7,9 @@
 	    <a href="http://getbootstrap.com">bootstrap</a> и 
 	    <a href="http://catalyst.org">catalyst</a>
 	  </p>
-
+	  <small>Приложение создавалось в рамках выполнения тестовое задание, исходники 
+	    <a href="http://github.com/karitra/cat-toys.git">тут</a>
+	  </small>
 	</div>
       </div>
 

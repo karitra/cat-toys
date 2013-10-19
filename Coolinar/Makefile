@@ -20,13 +20,13 @@
 #     LICENSE => q[perl]
 #     NAME => q[Coolinar]
 #     NO_META => q[1]
-#     PREREQ_PM => { HTML::FormHandler::Model::DBIC=>q[0], Catalyst::Plugin::ConfigLoader=>q[0], Catalyst::Plugin::Session::State::Cookie=>q[0], Config::General=>q[0], Catalyst::Plugin::StatusMessage=>q[0], Moose=>q[0], HTML::FormHandler::Widget::Theme::Bootstrap=>q[0], namespace::autoclean=>q[0], Cache::Memcached::libmemcached=>q[0], Catalyst::Plugin::Static::Simple=>q[0], ExtUtils::MakeMaker=>q[6.36], DBIx::Class::PassphraseColumn=>q[0], Catalyst::Plugin::StackTrace=>q[0], Catalyst::Plugin::Session::Store::File=>q[0], Catalyst::Action::RenderView=>q[0], Catalyst::Plugin::Session=>q[0], Test::More=>q[0.88], Catalyst::Plugin::Cache=>q[0], Catalyst::Plugin::Session::Store::Memcached=>q[0], Catalyst::Plugin::Authentication=>q[0], Catalyst::Authentication::Realm::SimpleDB=>q[0], Catalyst::Runtime=>q[5.90042] }
+#     PREREQ_PM => { HTML::FormHandler::Model::DBIC=>q[0], Catalyst::Plugin::ConfigLoader=>q[0], Catalyst::Plugin::Session::State::Cookie=>q[0], Config::General=>q[0], Catalyst::Plugin::StatusMessage=>q[0], Moose=>q[0], HTML::FormHandler::Widget::Theme::Bootstrap=>q[0], MooseX::MarkAsMethods=>q[0], Catalyst::View::TT=>q[0], namespace::autoclean=>q[0], Cache::Memcached::libmemcached=>q[0], Catalyst::Plugin::Static::Simple=>q[0], ExtUtils::MakeMaker=>q[6.36], DBIx::Class::PassphraseColumn=>q[0], DBIx::Class::TimeStamp=>q[0], Catalyst::Plugin::StackTrace=>q[0], Catalyst::Plugin::Session::Store::File=>q[0], Catalyst::Plugin::Session=>q[0], Catalyst::Action::RenderView=>q[0], MooseX::NoMoose=>q[0], Test::More=>q[0.88], Catalyst::Plugin::Cache=>q[0], Module::Build::Tiny=>q[0], Catalyst::Plugin::Session::Store::Memcached=>q[0], Catalyst::Plugin::Authentication=>q[0], Catalyst::Authentication::Realm::SimpleDB=>q[0], Catalyst::Runtime=>q[5.90042] }
 #     TEST_REQUIRES => {  }
 #     VERSION => q[0.01]
 #     VERSION_FROM => q[lib/Coolinar.pm]
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
 #     realclean => { FILES=>q[MYMETA.yml] }
-#     test => { TESTS=>q[t/01app.t t/02pod.t t/03podcoverage.t t/controller_Image.t t/controller_Login.t t/controller_Recipe.t t/controller_Recipes.t t/model_DB.t t/view_HTML.t] }
+#     test => { TESTS=>q[t/01app.t t/02pod.t t/03podcoverage.t t/04live_app.t t/controller_Image.t t/controller_Login.t t/controller_Recipes.t t/model_DB.t t/view_HTML.t] }
 
 # --- MakeMaker post_initialize section:
 
@@ -882,7 +882,7 @@ $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 TEST_VERBOSE=0
 TEST_TYPE=test_$(LINKTYPE)
 TEST_FILE = test.pl
-TEST_FILES = t/01app.t t/02pod.t t/03podcoverage.t t/controller_Image.t t/controller_Login.t t/controller_Recipe.t t/controller_Recipes.t t/model_DB.t t/view_HTML.t
+TEST_FILES = t/01app.t t/02pod.t t/03podcoverage.t t/04live_app.t t/controller_Image.t t/controller_Login.t t/controller_Recipes.t t/model_DB.t t/view_HTML.t
 TESTDB_SW = -d
 
 testdb :: testdb_$(LINKTYPE)
@@ -926,11 +926,16 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Static::Simple" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::StatusMessage" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Runtime" VERSION="5.90042" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::View::TT" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Config::General" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class::PassphraseColumn" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class::TimeStamp" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="HTML::FormHandler::Model::DBIC" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="HTML::FormHandler::Widget::Theme::Bootstrap" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Module::Build::Tiny" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::MarkAsMethods" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::NoMoose" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="namespace::autoclean" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="i386-linux-thread-multi-5.10" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
@@ -996,20 +1001,20 @@ checkdeps ::
 	$(PERL) Makefile.PL --checkdeps
 
 installdeps ::
-	$(NOECHO) $(NOOP)
+	$(PERL) Makefile.PL --config= --installdeps=MooseX::NoMoose,0
 
 installdeps_notest ::
-	$(NOECHO) $(NOOP)
+	$(PERL) Makefile.PL --config=notest,1 --installdeps=MooseX::NoMoose,0
 
 upgradedeps ::
-	$(PERL) Makefile.PL --config= --upgradedeps=Test::More,0.88,Catalyst::Runtime,5.90042,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Plugin::StackTrace,0,Catalyst::Action::RenderView,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::Store::Memcached,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::Plugin::StatusMessage,0,Catalyst::Plugin::Cache,0,Catalyst::Authentication::Realm::SimpleDB,0,DBIx::Class::PassphraseColumn,0,Cache::Memcached::libmemcached,0,Moose,0,namespace::autoclean,0,Config::General,0
+	$(PERL) Makefile.PL --config= --upgradedeps=MooseX::NoMoose,0,Test::More,0.88,Module::Build::Tiny,0,Catalyst::Runtime,5.90042,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Plugin::StackTrace,0,Catalyst::Action::RenderView,0,Catalyst::View::TT,0,MooseX::MarkAsMethods,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::Store::Memcached,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::Plugin::StatusMessage,0,Catalyst::Plugin::Cache,0,Catalyst::Authentication::Realm::SimpleDB,0,DBIx::Class::PassphraseColumn,0,DBIx::Class::TimeStamp,0,Cache::Memcached::libmemcached,0,Moose,0,namespace::autoclean,0,Config::General,0
 
 upgradedeps_notest ::
-	$(PERL) Makefile.PL --config=notest,1 --upgradedeps=Test::More,0.88,Catalyst::Runtime,5.90042,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Plugin::StackTrace,0,Catalyst::Action::RenderView,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::Store::Memcached,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::Plugin::StatusMessage,0,Catalyst::Plugin::Cache,0,Catalyst::Authentication::Realm::SimpleDB,0,DBIx::Class::PassphraseColumn,0,Cache::Memcached::libmemcached,0,Moose,0,namespace::autoclean,0,Config::General,0
+	$(PERL) Makefile.PL --config=notest,1 --upgradedeps=MooseX::NoMoose,0,Test::More,0.88,Module::Build::Tiny,0,Catalyst::Runtime,5.90042,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Plugin::StackTrace,0,Catalyst::Action::RenderView,0,Catalyst::View::TT,0,MooseX::MarkAsMethods,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::Store::Memcached,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::Plugin::StatusMessage,0,Catalyst::Plugin::Cache,0,Catalyst::Authentication::Realm::SimpleDB,0,DBIx::Class::PassphraseColumn,0,DBIx::Class::TimeStamp,0,Cache::Memcached::libmemcached,0,Moose,0,namespace::autoclean,0,Config::General,0
 
 listdeps ::
-	@$(PERL) -le "print for @ARGV" 
+	@$(PERL) -le "print for @ARGV" MooseX::NoMoose
 
 listalldeps ::
-	@$(PERL) -le "print for @ARGV" Test::More Catalyst::Runtime Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Plugin::StackTrace Catalyst::Action::RenderView HTML::FormHandler::Model::DBIC HTML::FormHandler::Widget::Theme::Bootstrap Catalyst::Plugin::Authentication Catalyst::Plugin::Session Catalyst::Plugin::Session::Store::File Catalyst::Plugin::Session::Store::Memcached Catalyst::Plugin::Session::State::Cookie Catalyst::Plugin::StatusMessage Catalyst::Plugin::Cache Catalyst::Authentication::Realm::SimpleDB DBIx::Class::PassphraseColumn Cache::Memcached::libmemcached Moose namespace::autoclean Config::General
+	@$(PERL) -le "print for @ARGV" MooseX::NoMoose Test::More Module::Build::Tiny Catalyst::Runtime Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Plugin::StackTrace Catalyst::Action::RenderView Catalyst::View::TT MooseX::MarkAsMethods HTML::FormHandler::Model::DBIC HTML::FormHandler::Widget::Theme::Bootstrap Catalyst::Plugin::Authentication Catalyst::Plugin::Session Catalyst::Plugin::Session::Store::File Catalyst::Plugin::Session::Store::Memcached Catalyst::Plugin::Session::State::Cookie Catalyst::Plugin::StatusMessage Catalyst::Plugin::Cache Catalyst::Authentication::Realm::SimpleDB DBIx::Class::PassphraseColumn DBIx::Class::TimeStamp Cache::Memcached::libmemcached Moose namespace::autoclean Config::General
 

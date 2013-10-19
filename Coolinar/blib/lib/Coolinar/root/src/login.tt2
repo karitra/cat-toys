@@ -4,7 +4,7 @@
 <div class="alert alert-info">
   <strong>Опа!</strong>
   А вы уже зарегистрировались в системе, но можете всегда 
-  <a href="[% c.uri_for('/logout') %]">покинуть</a> её
+  <strong><a href="[% c.uri_for('/logout') %]">покинуть</a></strong> её
 </div>
 [% END %]
 
@@ -29,4 +29,4 @@
 <button type="submit" class="btn btn-default">Зайти</button>
 </form>
 <br>
-<small>Пара guest/guest должна прокатить</small>
+<small>Пара guest/guest должна сработать</small>
