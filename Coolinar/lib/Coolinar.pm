@@ -71,8 +71,9 @@ __PACKAGE__->config(
     'Plugin::Cache' => {
 	backend => {
 	    class   => 'Cache::Memcached::libmemcached',
-	    servers => [ '127.0.0.1:11211' ],
+	    servers => [ "$ENV{HOME}/var/memd.sock" ],
 #	    debug   => 2,
+	    behaviour_binary_protocol => 1,
 	},
     },
 
@@ -80,14 +81,12 @@ __PACKAGE__->config(
     encoding     => 'utf-8',
 );
 
-__PACKAGE__->config->{'Plugin::Cache'}{backend} = {
-    class   => "Cache::Memcached::libmemcached",
-    servers => ['127.0.0.1:11211'],
-#    debug   => 2,
-};
-
+#
+# Globals
+#
 __PACKAGE__->config->{REC_PER_PAGE} = 6;
 __PACKAGE__->config->{PAGES_IN_BAR} = 5;
+
 
 # Start the application
 __PACKAGE__->setup();
