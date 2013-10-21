@@ -20,7 +20,7 @@
 <div class="form-group">
   [% f = form.field('name') -%]
   <label for="[% f.name %]">[% f.label %]</label>
-  <input type="text" class="form-control" name="[% f.name %]" id="[% f.name %]" placeholder="Введите название" value="[% f.fif | html %]">
+  <input type="text" class="form-control" name="[% f.name %]" id="[% f.name %]" placeholder="Введите название" value="[% f.fif | html %]" />
 </div>
 <div class="form-group">
   [% f = form.field('desc') -%]
@@ -31,7 +31,7 @@
 </form>
 
 
-<hr>
+<hr/>
 
 <p>Вернуться к <a href="[% c.uri_for(c.controller.action_for('list'), [pg] ) -%]">списку</a> рецептов</p>
 </div>
